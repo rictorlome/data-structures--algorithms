@@ -1,12 +1,14 @@
 # Implementation of basic binary search tree with insert, find, find_min, find_max, find_successor, and delete
+# Augmented so that Nodes include height information. This is used in the AVL_tree implementation
 
 class Node:
 
-    def __init__(self, val, parent=None, l_child=None, r_child=None):
+    def __init__(self, val, parent=None, l_child=None, r_child=None, height=0):
         self.val = val
         self.parent = parent
         self.l_child = l_child
         self.r_child = r_child
+        self.height = height
 
     def __repr__(self):
         return '[{0}]'.format(self.val)
@@ -76,7 +78,7 @@ class BST:
 
     def find_node(self, cur_node, val):
         if cur_node is None:
-            return False
+            return None
         elif val == cur_node.val:
             return cur_node
         elif val < cur_node.val:
@@ -122,8 +124,8 @@ class BST:
             return cur_node.parent
 
     def delete(self, val):
-        if self.find(val):
-            node = self.find(val)
+        node = self.find(val)
+        if node:
             self.delete_node(node)
             self.size -= 1
         else:
@@ -138,16 +140,14 @@ class BST:
                 node.parent.r_child = None
         #one child
         elif node.has_any_children() and not node.has_both_children():
+            child = None
+            child = node.l_child if node.has_l_child() else node.r_child
             if node.is_l_child():
                 if node.has_l_child():
-                    node.parent.l_child = node.l_child
-                else:
-                    node.parent.l_child = node.r_child
+                    node.parent.l_child = child
             elif node.is_r_child():
                 if node.has_l_child():
-                    node.parent.r_child = node.l_child
-                else:
-                    node.parent.r_child = node.r_child
+                    node.parent.r_child = child
         #two children
         else:
             succ = self.find_successor_node(node)
@@ -159,3 +159,4 @@ b = BST()
 q = [12,44,23,14,55,77,88,45,1]
 for i in q:
     b.insert(i)
+
