@@ -1,6 +1,7 @@
 #Implementation of AVL trees, which rebalance after insertion and delete.
 #Much of this code is copied from OCW 6.006 Notes
-#Note sure why I cannot delete the min value in the tree... But that causes bugs with the size of the tree, which continues to decrement even though the Node remains in place
+#The delete_node function seems to be buggy. It resurrects dead nodes, and it cannot delete the min.
+#The size attribute of the tree is also not protected against these bugs, and it continues to decrement even though the nodes remain in place
 
 import binary_search_tree
 
