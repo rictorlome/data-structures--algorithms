@@ -9,8 +9,8 @@
 import numpy as np
 
 #Example unsorted array to test with.
-A = np.random.randint(100, size=1000)
 K = 100
+A = np.random.randint(K, size=1000)
 
 def counting_sort(unsorted_array, max_val):
     #Create class Link in order to populate array.
@@ -29,10 +29,8 @@ def counting_sort(unsorted_array, max_val):
         if myarray[num] is None:
             myarray[num] = lnk
         else:
-            cur = myarray[num]
-            while cur.next is not None:
-                cur = cur.next
-            cur.next = lnk
+            lnk.next = myarray[num]
+            myarray[num] = lnk
 
     #Iterate through myarray
     res = []
