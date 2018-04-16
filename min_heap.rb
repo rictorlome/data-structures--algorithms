@@ -1,4 +1,13 @@
-require 'byebug'
+## Implements a min binary heap using a map and an array.
+## - The map provides lookup in O(1).
+## The array encodes the heap property where:
+## - the smallest element is at index 0
+## - each node located at index i is smaller than the two children located at indices 2i+1 and 2i+2
+
+## The structure supports:
+# - decreasing a node's value in O(logn)
+# - adding a key in O(logn)
+# - removing the min in O(logn) (O(1) to find min, O(logn) to maintain heap property after extraction)
 
 class Node
   attr_accessor :key, :val
@@ -50,7 +59,7 @@ class MinBinaryHeap
 
   def parent(key)
     i = @map[key]
-    return nil if (i-1)/2 < 0
+    return nil if i == 0
     @nodes[(i-1)/2]
   end
 
@@ -85,9 +94,8 @@ class MinBinaryHeap
   def smaller_child(node)
     left, right = self.left_child(node.key), self.right_child(node.key)
     return nil if left == nil && right == nil
-    return left if left != nil && right == nil
-    return right if right != nil && left == nil
-    left.val <= right.val ? left : right
+    return (left.val <= right.val ? left : right) if left && right
+    left || right
   end
 
   def extract_min
