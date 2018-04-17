@@ -67,10 +67,23 @@ class MinBinaryHeap
     throw 'Already in Heap' if self.contains?(key)
     node = Node.new(key,val)
     @nodes << node
-    @map[key] = @nodes.length - 1
+    i = @nodes.length - 1
+    @map[key] = i
+
+    if parent(key) == nil && i != 0
+      replace_nil_parent(node)
+      @nodes.pop
+    end  
     until parent(node.key) == nil || parent(node.key).val <= node.val
       swap_child_parent(node,parent(node.key))
     end
+  end
+
+  def replace_nil_parent(node)
+    i = @map[node.key]
+    parent_idx = (i-1) / 2
+    @nodes[parent_idx] = node
+    @map[node.key] = parent_idx
   end
 
   def contains?(key)
