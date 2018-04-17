@@ -47,6 +47,14 @@ class MinBinaryHeap
     map
   end
 
+  def empty?
+    @map.empty?
+  end
+
+  def get_val(key)
+    @nodes[@map[key]].val
+  end
+
   def left_child(key)
     i = @map[key]
     @nodes[2*i + 1]
@@ -73,7 +81,7 @@ class MinBinaryHeap
     if parent(key) == nil && i != 0
       replace_nil_parent(node)
       @nodes.pop
-    end  
+    end
     until parent(node.key) == nil || parent(node.key).val <= node.val
       swap_child_parent(node,parent(node.key))
     end
@@ -106,12 +114,12 @@ class MinBinaryHeap
 
   def smaller_child(node)
     left, right = self.left_child(node.key), self.right_child(node.key)
-    return nil if left == nil && right == nil
     return (left.val <= right.val ? left : right) if left && right
     left || right
   end
 
   def extract_min
+    return nil if self.empty?
     min = @nodes[0]
     until self.smaller_child(min) == nil
       nxt = self.smaller_child(min)
