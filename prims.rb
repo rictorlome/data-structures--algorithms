@@ -35,6 +35,8 @@ EX_MAP_TO_IDX = {
 }
 
 class WeightedGraph
+  attr_reader :adj_list, :map_to_idx
+  
   def initialize(adj_list=[], map_to_idx={})
     @adj_list = adj_list
     @map_to_idx = map_to_idx
