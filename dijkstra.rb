@@ -16,27 +16,22 @@ require './prims.rb'
 ## Assumes non-negative cycles.
 module Dijkstra
   def dijkstra(start)
+    ## This initializes start to 0 and all other nodes to infinity
     heap = initialize_heap(start)
-    distance_map = {}
-    predecessor_map = {}
-
-    min = heap.extract_min.key
-    distance_map[min] = 0
-    predecessor_map[min] = nil
-
+    distance_map = {start => 0}
+    predecessor_map = {start => nil}
     until heap.empty?
-      edges = self.adj_list[self.map_to_idx[min]]
-      edges.each do |edge|
-        key, weight = edge
-        new_val = weight + distance_map[min]
-        if heap.contains?(key) && heap.get_val(key) > new_val
-          heap.decrease_val(key,new_val)
-          predecessor_map[key] = min
-        end
-      end
       min = heap.extract_min
       distance_map[min.key] = min.val
-      min = min.key
+      edges = self.adj_list[self.map_to_idx[min.key]]
+      edges.each do |edge|
+        key, weight = edge
+        new_val = weight + distance_map[min.key]
+        if heap.contains?(key) && heap.get_val(key) > new_val
+          heap.decrease_val(key,new_val)
+          predecessor_map[key] = min.key
+        end
+      end
     end
     [distance_map,predecessor_map]
   end
